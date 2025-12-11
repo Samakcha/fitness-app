@@ -53,9 +53,10 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/classes', classRoutes);
 
 
-app.get('/*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
+
 
 
 app.get('/', (req, res) => {
