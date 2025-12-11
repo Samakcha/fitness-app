@@ -3,6 +3,8 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
+import path from 'path'
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
@@ -35,6 +37,12 @@ const connectDB = async () => {
   }
 };
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve frontend build
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
 // Routes
 import authRoutes from './routes/auth.js';
 import adminRoutes from './routes/admin.js';
@@ -43,6 +51,11 @@ import classRoutes from './routes/classes.js';
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/classes', classRoutes);
+
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
 
 app.get('/', (req, res) => {
   res.send('Fitness App API is running...');
