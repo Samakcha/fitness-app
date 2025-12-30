@@ -19,7 +19,7 @@ const AdminPlans = () => {
 
   const fetchPlans = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/plans`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/plans`);
       setPlans(res.data);
     } catch (error) {
       console.error(error);
@@ -37,7 +37,7 @@ const AdminPlans = () => {
         ...formData,
         features: formData.features.split(',').map(f => f.trim()), // Simple CSV parsing
       };
-      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/plans`, formattedData);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/plans`, formattedData);
       toast.success('Plan created successfully');
       setFormData({ name: '', price: '', durationInMonths: '', features: '', description: '' });
       fetchPlans();
@@ -49,7 +49,7 @@ const AdminPlans = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this plan?')) return;
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/plans/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/plans/${id}`);
       toast.success('Plan deleted');
       fetchPlans();
     } catch (error) {

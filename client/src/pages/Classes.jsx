@@ -16,7 +16,7 @@ const Classes = () => {
 
   const fetchClasses = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/classes`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/classes`);
       setClasses(res.data);
     } catch (error) {
       console.error(error);
@@ -31,7 +31,7 @@ const Classes = () => {
       return;
     }
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/classes/${id}/book`);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/classes/${id}/book`);
       toast.success('Class booked successfully!');
       fetchClasses(); // Refresh to update capacity/booking status
     } catch (error) {

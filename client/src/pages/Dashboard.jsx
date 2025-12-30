@@ -15,7 +15,7 @@ const Dashboard = () => {
 
   const fetchMyClasses = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/classes/myclasses`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/classes/myclasses`);
       setMyClasses(res.data);
     } catch (error) {
       console.error(error);
@@ -27,7 +27,7 @@ const Dashboard = () => {
   const handleCancel = async (id) => {
     if (!window.confirm('Cancel this booking?')) return;
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/classes/${id}/book`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/classes/${id}/book`);
       toast.success('Booking cancelled');
       setMyClasses(myClasses.filter(c => c._id !== id));
     } catch (error) {

@@ -20,7 +20,7 @@ const MySchedule = () => {
 
   const fetchMyClasses = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/classes/myclasses`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/classes/myclasses`);
       setMyClasses(res.data);
     } catch (error) {
       console.error(error);
@@ -33,7 +33,7 @@ const MySchedule = () => {
   const handleCancel = async (id) => {
     if (!window.confirm('Action cannot be undone. Cancel this booking?')) return;
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/classes/${id}/book`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/classes/${id}/book`);
       toast.success('Booking cancelled');
       // Update local state immediately
       setMyClasses(prev => prev.filter(c => c._id !== id));

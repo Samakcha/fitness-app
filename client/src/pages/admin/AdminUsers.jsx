@@ -12,7 +12,7 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/users`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/users`);
       setUsers(res.data);
     } catch (error) {
       toast.error('Failed to fetch users');
@@ -23,7 +23,7 @@ const AdminUsers = () => {
 
   const handleUpdateRole = async (userId, newRole) => {
     try {
-      await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/users/${userId}/role`, { role: newRole });
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/users/${userId}/role`, { role: newRole });
       toast.success(`Role updated to ${newRole}`);
       fetchUsers();
     } catch (error) {

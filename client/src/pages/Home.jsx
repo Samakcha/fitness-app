@@ -12,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/plans`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/plans`);
         setPlans(res.data);
       } catch (error) {
         console.error('Failed to fetch plans', error);
