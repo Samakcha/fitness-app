@@ -130,43 +130,45 @@ const Home = () => {
               </p>
             )}
           </motion.div>
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            {plans.map((plan) => (
-              <motion.div
-                key={plan._id}
-                variants={fadeInUp}
-                className="relative p-8 bg-gray-900 rounded-2xl border border-gray-800 flex flex-col hover:border-red-600 transition duration-300"
-              >
-                <div className="mb-4">
-                  <h3 className="text-2xl font-bold text-white">{plan.name}</h3>
-                  <p className="text-gray-400 text-sm mt-1">{plan.durationInMonths} Month Access</p>
-                </div>
-                <div className="mb-6">
-                  <span className="text-4xl font-bold text-red-500">₹{plan.price}</span>
-                  <span className="text-gray-500"> / period</span>
-                </div>
-                <ul className="flex-1 mb-8 space-y-4">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-center text-gray-300">
-                      <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                      </svg>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <Link to="/register" className="w-full py-3 text-center bg-gray-800 text-white border border-gray-600 rounded-xl hover:bg-white hover:text-black transition font-bold block">
-                  Select Plan
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
+          {plans.length > 0 && (
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={staggerContainer}
+            >
+              {plans.map((plan) => (
+                <motion.div
+                  key={plan._id}
+                  variants={fadeInUp}
+                  className="relative p-8 bg-gray-900 rounded-2xl border border-gray-800 flex flex-col hover:border-red-600 transition duration-300"
+                >
+                  <div className="mb-4">
+                    <h3 className="text-2xl font-bold text-white">{plan.name}</h3>
+                    <p className="text-gray-400 text-sm mt-1">{plan.durationInMonths} Month Access</p>
+                  </div>
+                  <div className="mb-6">
+                    <span className="text-4xl font-bold text-red-500">₹{plan.price}</span>
+                    <span className="text-gray-500"> / period</span>
+                  </div>
+                  <ul className="flex-1 mb-8 space-y-4">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-center text-gray-300">
+                        <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link to="/register" className="w-full py-3 text-center bg-gray-800 text-white border border-gray-600 rounded-xl hover:bg-white hover:text-black transition font-bold block">
+                    Select Plan
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
         </div>
       </section>
 
