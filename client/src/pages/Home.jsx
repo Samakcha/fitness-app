@@ -112,24 +112,31 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-20 bg-black">
-        <div className="max-w-7xl mx-auto px-4">
+      {/* Pricing Section - Redesigned as Make Your Own Membership */}
+      <section id="pricing" className="py-24 bg-black relative overflow-hidden">
+        {/* Background Gradients */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-900/20 rounded-full blur-3xl filter opacity-30"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-3xl filter opacity-30"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
           <motion.div
-            className="text-center mb-16"
+            className="text-center mb-20"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl font-bold uppercase mb-4">Membership Plans</h2>
-            <p className="text-gray-400">Choose the perfect plan for your goals</p>
-            {plans.length > 0 && (
-              <p className="text-xl text-red-500 font-bold mt-2">
-                Plans range from ₹{minPrice} to ₹{maxPrice}
-              </p>
-            )}
+            <h2 className="text-5xl md:text-6xl font-black uppercase mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-500">
+              Make Your Own <span className="text-red-600">Membership</span>
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto font-light">
+              Customize your journey by selecting the tier that aligns with your ambition.
+              Functionality meets freedom.
+            </p>
           </motion.div>
+
           {plans.length > 0 && (
             <motion.div
               className="grid grid-cols-1 md:grid-cols-3 gap-8"
@@ -138,32 +145,57 @@ const Home = () => {
               viewport={{ once: true }}
               variants={staggerContainer}
             >
-              {plans.map((plan) => (
+              {plans.map((plan, index) => (
                 <motion.div
                   key={plan._id}
                   variants={fadeInUp}
-                  className="relative p-8 bg-gray-900 rounded-2xl border border-gray-800 flex flex-col hover:border-red-600 transition duration-300"
+                  whileHover={{ y: -10 }}
+                  className={`
+                    relative p-8 rounded-3xl flex flex-col transition-all duration-300
+                    ${index === 1 ? 'bg-gradient-to-b from-gray-800 to-gray-900 border-2 border-red-600 shadow-[0_0_50px_-12px_rgba(220,38,38,0.3)] scale-105 z-10' : 'bg-gray-900/50 border border-gray-800 hover:border-gray-600 hover:bg-gray-900'}
+                  `}
                 >
-                  <div className="mb-4">
-                    <h3 className="text-2xl font-bold text-white">{plan.name}</h3>
-                    <p className="text-gray-400 text-sm mt-1">{plan.durationInMonths} Month Access</p>
+                  {index === 1 && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-red-600 text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-lg">
+                      Most Popular
+                    </div>
+                  )}
+
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-white mb-2 tracking-wide">{plan.name}</h3>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-5xl font-black text-white">₹{plan.price}</span>
+                      <span className="text-gray-400 font-medium">/ {plan.durationInMonths === 1 ? 'Month' : `${plan.durationInMonths} Months`}</span>
+                    </div>
+                    <p className="text-gray-500 text-sm mt-4 leading-relaxed line-clamp-2">{plan.description}</p>
                   </div>
-                  <div className="mb-6">
-                    <span className="text-4xl font-bold text-red-500">₹{plan.price}</span>
-                    <span className="text-gray-500"> / period</span>
+
+                  <div className="flex-1 mb-8">
+                    <div className="h-px w-full bg-gray-800 mb-6"></div>
+                    <ul className="space-y-4">
+                      {plan.features.map((feature, i) => (
+                        <li key={i} className="flex items-start text-gray-300 group">
+                          <span className={`mr-3 mt-1 flex items-center justify-center w-5 h-5 rounded-full ${index === 1 ? 'bg-red-600/20 text-red-500' : 'bg-gray-800 text-gray-400 group-hover:text-white'} transition-colors`}>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                            </svg>
+                          </span>
+                          <span className="text-sm font-medium">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="flex-1 mb-8 space-y-4">
-                    {plan.features.map((feature, i) => (
-                      <li key={i} className="flex items-center text-gray-300">
-                        <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link to="/register" className="w-full py-3 text-center bg-gray-800 text-white border border-gray-600 rounded-xl hover:bg-white hover:text-black transition font-bold block">
-                    Select Plan
+
+                  <Link
+                    to="/register"
+                    className={`
+                      w-full py-4 text-center rounded-xl font-bold tracking-wide transition-all duration-300
+                      ${index === 1
+                        ? 'bg-red-600 text-white hover:bg-red-700 shadow-lg hover:shadow-red-600/50'
+                        : 'bg-white text-black hover:bg-gray-200'}
+                    `}
+                  >
+                    Select Capability
                   </Link>
                 </motion.div>
               ))}
