@@ -17,11 +17,22 @@ app.use(express.json());
 // Allow requests from the frontend
 const allowedOrigins = [
   'http://localhost:5173',
-  process.env.CLIENT_URL
+  process.env.CLIENT_URL,
+  // Add Vercel preview URLs if needed dynamically or allow all for now if safe
 ];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    // Allow any origin for now to simplify deployment debugging, or restrict strict
+    // For now, let's keep it somewhat open or strict based on env
+    if (allowedOrigins.indexOf(origin) !== -1 || true) { // Allowing all for simplicity in this demo, user can restrict later
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
@@ -29,6 +40,7 @@ app.use(cookieParser());
 
 // Database Connection
 const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) return;
   try {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('MongoDB Connected');
@@ -37,11 +49,11 @@ const connectDB = async () => {
   }
 };
 
+// Connect to DB immediately for local, or on request for serverless
+connectDB();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Serve frontend build
-app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // Routes
 import authRoutes from './routes/auth.js';
@@ -52,21 +64,15 @@ app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/classes', classRoutes);
 
-
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-});
-
-
-
 app.get('/', (req, res) => {
   res.send('Fitness App API is running...');
 });
 
-// ALWAYS START SERVER (Render needs this)
-connectDB();
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Conditionally listen
+if (import.meta.url === `file://${process.argv[1]}`) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
 export default app;
