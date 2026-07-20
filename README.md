@@ -43,22 +43,6 @@ cd fitness-app
 
 3. Open `index.html` in your browser.
 
-## Screenshots
-
-Add screenshots here after uploading them to the repository.
-
-Example:
-
-```
-screenshots/
-    home.png
-    workout.png
-```
-
-```md
-![Home](screenshots/home.png)
-```
-
 ## Future Improvements
 
 - User authentication
