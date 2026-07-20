@@ -16,8 +16,6 @@ A simple and responsive fitness application built to help users explore workouts
 - CSS
 - JavaScript
 
-> *(Replace the above stack if your project uses React, Next.js, Tailwind, etc.)*
-
 ## Project Structure
 
 ```
